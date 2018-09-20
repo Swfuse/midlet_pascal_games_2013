@@ -1,0 +1,414 @@
+Program Tetris;
+procedure cls;
+begin
+setcolor(0,0,0);
+fillrect(0,0,getWidth ,getHeight);
+setcolor(255,255,255);
+drawline(96,0,96,160);
+end;
+var
+i,key,key2,j, vrem,vrem2, dx,dy,sec,ob,right,left:integer;//счетчик цикла, кнопка
+//обновление экрана, разрешения движения
+k,m,i1,sc:integer;//номера фигурок, очки
+score:string;//тоже очки, но они нужны для вывода
+r,g,b:integer;//три цвета
+zap:integer;//переменная для подсчета заполненных ячеек
+prov:integer;
+stak : array[1..23,1..23] of integer;//стакан-поле
+telo :array[1..4,1..4] of integer;//отдельные фигуры
+telo2:array [1..4,1..4] of integer;//пророк следующей фигуры
+
+begin
+k:=6;
+         telo[2,1]:=1;
+          telo[2,2]:=1;
+          telo[2,3]:=1;
+          telo[3,3]:=1; 
+   
+
+dx:=32;
+dy:=0;
+m:=random(7);
+         if m=0 then//зигзаг
+				 begin
+				  telo2[2,2]:=1;
+          telo2[2,3]:=1;
+          telo2[3,2]:=1;
+          telo2[3,1]:=1;
+         
+         end;
+          if m=1 then//палка
+          begin
+          telo2[1,1]:=1;
+          telo2[2,1]:=1;
+          telo2[3,1]:=1;
+          telo2[4,1]:=1;
+            
+          end;	
+          if m=2 then//зигзаг
+         begin
+          telo2[1,1]:=1;
+          telo2[1,2]:=1;
+          telo2[2,2]:=1;
+          telo2[2,3]:=1;  
+         end;	
+          if m=3 then//кубик
+         begin
+          telo2[1,1]:=1;
+          telo2[1,2]:=1;
+          telo2[2,1]:=1;
+          telo2[2,2]:=1;  
+         end;
+         if m=4 then//трезубец
+         begin
+          telo2[1,1]:=1;
+          telo2[1,2]:=1;
+          telo2[1,3]:=1;
+          telo2[2,2]:=1;  
+         end;
+          if m=5 then//кочерга
+         begin
+          telo2[2,1]:=1;
+          telo2[2,2]:=1;
+          telo2[2,3]:=1;
+          telo2[1,3]:=1;  
+         end;	
+         if m=6 then 
+         begin
+         telo2[2,1]:=1;
+          telo2[2,2]:=1;
+          telo2[2,3]:=1;
+          telo2[3,3]:=1;
+          end; 
+repeat
+
+//ob:=500;
+ 
+	for j:=1 to 20 do
+		if (stak[1,j]=1)  then 
+		begin
+			for i:=1 to 20 do
+				for j:=1 to 20 do
+				 stak[i,j]:=0;
+				 sc:=0;
+				 
+		end;
+		
+			
+			
+			
+cls;//очистка экрана
+	setcolor(255,255,255);
+DrawText('Счет',100,10);
+score:=integertostring(sc);
+DrawText(score,100,22);
+DrawText('След',97,35);
+  key:=getkeyclicked;//кликаем кнопкой
+  key2:=getkeypressed;
+  for i:=1 to 20 do
+	  for j:=1 to 20 do
+		begin
+			if (stak[i,j]<>0) then//отрисовка массива стакана
+				begin
+         setcolor(240,164,140);
+          fillrect((j-1)*8,(i-1)*8,7,7);
+           end
+          
+      end;    
+   for i:=1 to 4 do//отрисовка массива фигуры
+	  for j:=1 to 4 do
+		begin
+			if (telo[i,j]=1) then
+				begin
+         setcolor(56,250,123);
+         fillrect((j-1)*8+dx,(i-1)*8+dy,7,7);
+          
+      end;
+ 
+end;   
+   for i:=1 to 4 do//отрисовка предсказателя
+	  for j:=1 to 4 do
+		begin
+			if (telo2[i,j]=1) then
+				begin
+         setcolor(56,250,123);
+          fillrect((j-1)*8+100,(i-1)*8+50,7,7);
+      end;
+ 
+end;   
+
+  if key=KE_KEY5 then
+		
+			begin
+				
+					if ((dx>(-8)) and (dx<80) ) then//если находятся на поле
+					begin
+					if (k=0) or (k=2) or (k=4) or (k=5) or (k=6) then//все, кроме кубика и палки
+						begin
+							for i:=1 to 3 do  //магия поворота на 90, причем массив 3на3
+								for j:=i to 3-i do
+			
+								begin
+									vrem:=telo[i,j];
+									telo[i,j]:=telo[3-j+1,i];
+									telo[3-j+1,i]:=telo[3-i+1,3-j+1];
+									telo[3-i+1,3-j+1]:=telo[j,3-i+1];
+									telo[j,3-i+1]:=vrem;
+								end;
+					  end;
+					  end;
+							if  ((dx>(-8)) and (dx<72) and(k=1)) then//здесь нам попалась палка, меняем условие где она может повернуться
+									begin                                 //уже 4на4
+										for i:=1 to 4 do
+											for j:=i+1 to 4 do
+												begin
+													vrem:=telo[i,j];
+													telo[i,j]:=telo[j,i];
+													telo[j,i]:=vrem;
+												end;
+	                end; 
+					 sec:=0;//обнуляем счетчик
+			end;
+	
+ 
+    if key=KE_KEY4 then
+  begin
+				if dx<=0 then
+				begin
+				
+				for i:=1 to 4 do
+					for j:=1 to 4 do
+						begin
+							if ((telo[i,j]=1) and (((j*8+dx)/8)=1)) then//.типа проверка наличия фигуры слева
+									
+									 left:=1;//переменная, отвечающая за поворот влево
+									 
+						end;
+					end;
+				 if dx>0 then
+				begin
+				for i:=1 to 4 do
+					for j:=1 to 4 do
+						begin
+							if ((telo[i,j]=1) and (((stak[i+(dy/8),j+(dx/8)-1]=1)))) then//.типа проверка наличия фигуры слева
+									
+									 left:=1;//
+									 
+						end;
+					end;
+					if left=0 then 
+             begin
+				       dx:=dx-8;
+				       sec:=0;
+				      end; 
+				end;   
+     if key=KE_KEY6 then
+			begin
+				for i:=1 to 4 do
+					for j:=1 to 4 do
+						begin
+							if ((telo[i,j]=1) and ( (((j*8+dx)/8)=12)  or (stak[i+(dy/8),j+(dx/8)+1]=1) )) then//.типа проверка наличия фигуры справа
+									
+									 right:=1;
+									 
+						end;
+					if right=0 then 
+             begin
+				       dx:=dx+8;
+				       sec:=0;
+				      end; 
+				end;   
+    
+   
+	sec:=sec+1;
+	if (sec=3 ) then//создаем счетчик когда фигура опускается
+		begin
+			dy:=dy+8;		
+			sec:=0;
+			ob:=500;
+			left:=0;
+			right:=0;
+			end;
+	
+  ob:=200;
+  if key2=KE_KEY8 then
+  ob:=1;
+  
+   
+  repaint;
+  delay(ob);
+ for i:=1 to 4 do
+	for j:=1 to 4 do
+   if (telo[i,j]=1)  then//проверка наличия внизу
+		if ( ((i*8+dy)/8=21) or (stak[i+(dy/8),j+(dx/8)]=1) ) then
+    begin
+	
+			for i:=1 to 4 do
+					for j:=1 to 4 do
+						if telo[i,j]=1 then
+							begin
+								stak[i+(dy/8)-1,j+(dx/8)]:=telo[i,j];//перенос фигуры в стакан
+				      end;
+				      zap:=0;
+			for i1:=1 to 20 do//цикл, отвечающий за ст
+				
+						for j:=1 to 20 do
+							begin
+									if stak[i1,j]=1 then
+										
+											zap:=zap+1;
+												
+												if (j=12) and (zap=12)
+													then
+														begin	
+															for i:=i1 to i1 do
+																for j:=1 to 20 do
+																		begin
+																	    stak[i,j]:=0;
+																	    zap:=0;
+																	   end; 
+																	  for i:=i1 downto 2 do
+																		  for j:=20 downto 1 do
+																		    begin
+																			   vrem:=stak[i,j];
+																			   stak[i,j]:=stak[i-1,j];
+																			   stak[i-1,j]:=vrem;
+																		    end;
+																	i1:=1;//если обнулили, то проверим еще раз
+																	sc:=sc+1;
+																	
+														end;
+												if (j=12) and (zap<>12) then
+													zap:=0;
+									        
+									 
+												
+							end;
+							
+				  dx:=32;
+				 dy:=0;
+				 
+				 for i:=1 to 4 do
+		    for j:=1 to 4 do
+		    begin
+		    telo[i,j]:=0;
+		    telo2[i,j]:=0;
+		    end;
+					k:=m;
+				 m:=random(6);
+				 if k=0 then//зигзаг
+				 begin
+				  telo[2,2]:=1;
+          telo[2,3]:=1;
+          telo[3,2]:=1;
+          telo[3,1]:=1;
+         end;
+          if k=1 then//палка
+          begin
+          telo[1,1]:=1;
+          telo[2,1]:=1;
+          telo[3,1]:=1;
+          telo[4,1]:=1;  
+          end;	
+          if k=2 then//зигзаг
+         begin
+          telo[1,1]:=1;
+          telo[1,2]:=1;
+          telo[2,2]:=1;
+          telo[2,3]:=1;  
+         end;	
+          if k=3 then//кубик
+         begin
+          telo[1,1]:=1;
+          telo[1,2]:=1;
+          telo[2,1]:=1;
+          telo[2,2]:=1;  
+         end;
+         if k=4 then//трезубец
+         begin
+          telo[1,1]:=1;
+          telo[1,2]:=1;
+          telo[1,3]:=1;
+          telo[2,2]:=1;  
+         end;
+          if k=5 then//кочерга
+         begin
+          telo[2,1]:=1;
+          telo[2,2]:=1;
+          telo[2,3]:=1;
+          telo[1,3]:=1;  
+         end;	
+         if k=6 then 
+         begin
+         telo[2,1]:=1;
+          telo[2,2]:=1;
+          telo[2,3]:=1;
+          telo[3,3]:=1;
+          end; 
+          for i:=1 to 4 do
+				for j:=1 to 4 do
+				
+			if (stak[i+(dy/8),j+(dx/8)]=1) and (telo[i,j]=1) then//чтобы не спавнилась прямо на стаканах
+			  begin
+			for i:=1 to 20 do
+				for j:=1 to 20 do
+				 stak[i,j]:=0;
+				 sc:=0;
+				 
+		end;
+          if m=0 then//зигзаг
+				 begin
+				  telo2[2,2]:=1;
+          telo2[2,3]:=1;
+          telo2[3,2]:=1;
+          telo2[3,1]:=1;
+         end;
+          if m=1 then//палка
+          begin
+          telo2[1,1]:=1;
+          telo2[2,1]:=1;
+          telo2[3,1]:=1;
+          telo2[4,1]:=1;  
+          end;	
+          if m=2 then//зигзаг
+         begin
+          telo2[1,1]:=1;
+          telo2[1,2]:=1;
+          telo2[2,2]:=1;
+          telo2[2,3]:=1;  
+         end;	
+          if m=3 then//кубик
+         begin
+          telo2[1,1]:=1;
+          telo2[1,2]:=1;
+          telo2[2,1]:=1;
+          telo2[2,2]:=1;  
+         end;
+         if m=4 then//трезубец
+         begin
+          telo2[1,1]:=1;
+          telo2[1,2]:=1;
+          telo2[1,3]:=1;
+          telo2[2,2]:=1;  
+         end;
+          if m=5 then//кочерга
+         begin
+          telo2[2,1]:=1;
+          telo2[2,2]:=1;
+          telo2[2,3]:=1;
+          telo2[1,3]:=1;  
+         end;	
+         if m=6 then 
+         begin
+         telo2[2,1]:=1;
+          telo2[2,2]:=1;
+          telo2[2,3]:=1;
+          telo2[3,3]:=1;
+          end; 
+          
+end;
+
+
+until false;
+End.
+ 

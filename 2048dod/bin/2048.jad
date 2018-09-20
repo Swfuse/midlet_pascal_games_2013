@@ -1,0 +1,9 @@
+MIDlet-1: 2048, /icon.png, FW
+MIDlet-Jar-Size: 4913
+MIDlet-Jar-URL: 2048.jar
+MIDlet-Name: 2048
+MIDlet-Vendor: MIDletPascal
+MIDlet-Icon: /icon.png
+MIDlet-Version: 1.0.0
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0

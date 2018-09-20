@@ -1,0 +1,360 @@
+Program t2048;
+procedure cls;//очистка экрана
+begin
+setcolor(187,173,160);
+fillrect(0,0,128,160);
+end;
+var
+kub :array[1..6,1..6] of integer;//массив циферок
+i,j,sc,k,m:integer;//счетчики цифр
+ch,score:string;
+vib,vib2:integer;//будем определять что выпадет-два или 4
+key,vrem:integer;//кнопка и временная переменная для движения цифер
+spawn:boolean;
+Begin
+kub[2,2]:=2;
+kub[2,5]:=2;
+kub[5,2]:=2;
+kub[5,5]:=2;
+	repeat
+	spawn:=false;
+	cls;
+	Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_MEDIUM  );
+		    setcolor(119,110,101);
+		    DrawText('Счет',10,15);
+		    score:=integerTostring(sc);
+		    DrawText(score,55,15);
+	key:=GetKeyClicked;//считываем клавишу.
+	 
+	for i:=2 to 5 do//отрисовываем блоки в зависимости от того, какая у них цифра.
+		for j:=2 to 5 do
+		 begin
+		  if kub[i,j]=0 then
+		   begin
+		    setcolor(204,192,179);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,1,1);
+		   end;
+		  
+		  if kub[i,j]=2 then//если двойка
+		   begin
+		    setcolor(238,228,218);//соответствующий цвет
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,1,1);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_MEDIUM  );//соответствующий шрифт
+		    setcolor(119,110,101);//цвет шрифта
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+10),((i-1)*32+5));
+		   end;
+	  
+     if kub[i,j]=4 then
+		   begin
+		    setcolor(237,223,200);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,1,1);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_MEDIUM  );
+		    setcolor(119,110,101);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+10),((i-1)*32+5));
+		   end;
+		
+		 if kub[i,j]=8 then
+		   begin
+		    setcolor(242,177,121);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,1,1);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_MEDIUM  );
+		    setcolor(249,246,242);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+10),((i-1)*32+5));
+		 
+		 end; 
+		 if kub[i,j]=16 then
+		   begin
+		    setcolor(245,149,99);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,1,1);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_MEDIUM  );
+		    setcolor(249,246,242);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+10),((i-1)*32+5));
+		 
+		 end; 
+		 if kub[i,j]=32 then
+		   begin
+		    setcolor(246,124,95);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,2,2);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_MEDIUM  );
+		    setcolor(249,246,242);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+10),((i-1)*32+5));
+		  
+		 end; 
+		 if kub[i,j]=64 then
+		   begin
+		    setcolor(245,95,60);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,2,2);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_MEDIUM  );
+		    setcolor(249,246,242);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+10),((i-1)*32+5));
+		  
+		 end; 
+		 if kub[i,j]=128 then
+		   begin
+		    setcolor(232,205,106);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,2,2);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_MEDIUM  );
+		    setcolor(249,246,242);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+5),((i-1)*32+5));
+		  
+		 end; 
+		 if kub[i,j]=256 then
+		   begin
+		    setcolor(237,204,96);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,2,2);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_MEDIUM  );
+		    setcolor(249,246,242);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+5),((i-1)*32+5));
+		  
+		 end; 
+		 if kub[i,j]=512 then
+		   begin
+		    setcolor(236,200,80);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,2,2);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_MEDIUM  );
+		    setcolor(249,246,242);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+5),((i-1)*32+5));
+		  
+		 end;
+     if kub[i,j]=1024 then
+		   begin
+		    setcolor(236,200,80);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,2,2);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_SMALL  );
+		    setcolor(249,246,242);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+3),((i-1)*32+5));
+		  
+		 end;  
+		 if kub[i,j]=2048 then
+		   begin
+		    setcolor(236,200,80);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,2,2);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_SMALL  );
+		    setcolor(249,246,242);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+1),((i-1)*32+5));
+		  
+		 end; 
+if kub[i,j]>2048 then
+		   begin
+		    setcolor(61,58,51);
+		    FillRoundRect((j-2)*32,(i-1)*32,31,31,2,2);
+		    Setfont(FONT_FACE_PROPORTIONAL ,FONT_STYLE_BOLD, FONT_SIZE_SMALL  );
+		    setcolor(238,194,46);
+		    ch:=IntegerToString(kub[i,j]);
+		    Drawtext(ch,((j-2)*32+3),((i-1)*32+5));
+		  
+		 end;   
+		 end;
+		 
+				if KeyTOAction(key)=GA_RIGHT then//если шестерка, то обрабатываем, начиная со строки, т.е. i
+				begin
+				
+                    for i:=5 downto 2 do
+								      for j:=5 downto 2 do
+												begin
+													while (j<>5) and (kub[i,j+1]=0) and (kub[i,j]<>0) do//переместили
+								               begin
+								                vrem:=kub[i,j];
+								                kub[i,j]:=kub[i,j+1];
+								                kub[i,j+1]:=vrem;
+								                j:=j+1;
+								                spawn:=true;
+								               end;
+												end;
+							for i:=5 downto 2 do
+								for j:=5 downto 2 do
+									begin
+							 
+								 if (kub[i,j]=kub[i,j+1]) and (kub[i,j+1]<>0) and(kub[i,j]<>0)  then//смешали
+												begin//
+								          kub[i,j+1]:=kub[i,j]+kub[i,j+1]; 
+								          kub[i,j]:=0;
+								          sc:=sc+kub[i,j]+kub[i,j+1];
+								         spawn:=true;
+                         j:=j+1; 
+                         
+								        end;
+								   end;     
+								    for i:=5 downto 2 do
+								      for j:=5 downto 2 do
+												begin
+													while (j<>5) and (kub[i,j+1]=0) and (kub[i,j]<>0) do//переместили
+								               begin
+								                vrem:=kub[i,j];
+								                kub[i,j]:=kub[i,j+1];
+								                kub[i,j+1]:=vrem;
+								                j:=j+1;
+								                spawn:=true;
+								               end;
+												end;
+								  
+						end;
+						if KeyToAction(key)=GA_LEFT then
+						begin
+				         for j:=2 to 5 do
+								      for i:=2 to 5 do
+												begin
+													while (j<>2) and (kub[i,j-1]=0) and (kub[i,j]<>0) do//переместили
+								               begin
+								                vrem:=kub[i,j];
+								                kub[i,j]:=kub[i,j-1];
+								                kub[i,j-1]:=vrem;
+								                j:=j-1;
+								                spawn:=true;
+								               end;
+												end;
+							for j:=2 to 5 do
+								for i:=2 to 5 do
+									begin
+							 
+								 if (kub[i,j]=kub[i,j-1]) and (kub[i,j-1]<>0) and(kub[i,j]<>0)  then//смешали
+												begin//
+								          kub[i,j-1]:=kub[i,j]+kub[i,j-1]; 
+								          kub[i,j]:=0;
+								          sc:=sc+kub[i,j]+kub[i,j-1];
+								         spawn:=true;
+                         j:=j-1; 
+                         
+								        end;
+								   end;     
+								    for j:=2 to 5 do
+								      for i:=2 to 5 do
+												begin
+													while (j<>2) and (kub[i,j-1]=0) and (kub[i,j]<>0) do//опять переместили
+								               begin
+								                vrem:=kub[i,j];
+								                kub[i,j]:=kub[i,j-1];
+								                kub[i,j-1]:=vrem;
+								                j:=j-1;
+								                spawn:=true;
+								               end;
+												end;    
+								   
+								  
+						end;
+						if KeyToAction(key)=GA_UP then
+						begin
+						  for j:=2 to 5 do
+								      for i:=2 to 5 do
+												begin
+													while (i<>2) and (kub[i-1,j]=0) and (kub[i,j]<>0) do//переместили
+								               begin
+								                vrem:=kub[i,j];
+								                kub[i,j]:=kub[i-1,j];
+								                kub[i-1,j]:=vrem;
+								                i:=i-1;
+								                spawn:=true;
+								               end;
+												end;
+							for j:=2 to 5 do
+								for i:=2 to 5 do
+									begin
+							 
+								 if (kub[i,j]=kub[i-1,j]) and (kub[i-1,j]<>0) and(kub[i,j]<>0)  then//смешали
+												begin//
+								          kub[i-1,j]:=kub[i,j]+kub[i-1,j]; 
+								          kub[i,j]:=0;
+								          sc:=sc+kub[i,j]+kub[i-1,j];
+								         spawn:=true;
+                         i:=i-1; 
+                         
+								        end;
+								   end;     
+								    for j:=2 to 5 do
+								      for i:=2 to 5 do
+												begin
+													while (i<>2) and (kub[i-1,j]=0) and (kub[i,j]<>0) do//опять переместили
+								               begin
+								                vrem:=kub[i,j];
+								                kub[i,j]:=kub[i-1,j];
+								                kub[i-1,j]:=vrem;
+								                i:=i-1;
+								                spawn:=true;
+								               end;
+												end;    
+								   
+                     
+												
+                 
+								  
+						end;
+						if KeyToAction(key)=GA_DOWN then//здесь у нас в приоритете столбцы
+					begin
+							for j:=5 downto 2 do
+								      for i:=5 downto 2 do
+												begin
+													while (i<>5) and (kub[i+1,j]=0) and (kub[i,j]<>0) do//переместили
+								               begin
+								                vrem:=kub[i,j];
+								                kub[i,j]:=kub[i+1,j];
+								                kub[i+1,j]:=vrem;
+								                i:=i+1;
+								                spawn:=true;
+								               end;
+												end;
+							for j:=5 downto 2 do
+								for i:=5 downto 2 do
+									begin
+							 
+								 if (kub[i,j]=kub[i+1,j]) and (kub[i+1,j]<>0) and(kub[i,j]<>0)  then//смешали
+												begin//
+								          kub[i+1,j]:=kub[i,j]+kub[i+1,j]; 
+								          kub[i,j]:=0;
+								          sc:=sc+kub[i,j]+kub[i+1,j];
+								         spawn:=true;
+                         i:=i+1; 
+                         
+								        end;
+								   end;     
+								    for j:=5 downto 2 do
+								      for i:=5 downto 2 do
+												begin
+													while (i<>5) and (kub[i+1,j]=0) and (kub[i,j]<>0) do//опять переместили
+								               begin
+								                vrem:=kub[i,j];
+								                kub[i,j]:=kub[i+1,j];
+								                kub[i+1,j]:=vrem;
+								                i:=i+1;
+								                spawn:=true;
+								               end;
+												end;    
+								   
+                     
+												
+                 
+								  
+						end;
+					
+				while (spawn=true) do 
+								  begin
+											    i:=random(4)+2;
+											    j:=random(4)+2;
+														vib:=random(9);
+														if (vib>=0)and(vib<=3)and (kub[i,j]=0) then
+														    begin
+																kub[i,j]:=4;
+																spawn:=false;
+																end;
+														if (vib>=4)and(vib<=9)and(kub[i,j]=0) then
+																begin
+																kub[i,j]:=2;
+																spawn:=false;
+																end;	
+	               end;
+						
+	repaint;
+	delay(10);
+	until(false);
+End.
+ 
